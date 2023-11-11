@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo-list MVC</title>
+</head>
+<body>
+<h1>Todo-list MVC</h1>
+
+<br>
+<form th:object="${createListModel}" th:action="@{/createlist}" method="post">
+    <input type="text" th:field="*{name}"/>
+    <input type="submit" value="Create list"/>
+</form>
+<br>
+<br>
+
+
+<div th:each="todolist : ${todolists}">
+
+    <div><h3 th:text="${todolist.name}"></h3></div>
+    <form th:object="${createItemModel}" th:action="@{/createitem}" method="post">
+        <input type="hidden" th:value="${todolist.uuid}" name="uuid"/>
+        <input type="text" th:field="*{name}">
+        <input type="submit" value="Create item"/>
+    </form>
+    <form th:object="${deleteFormModel}" th:action="@{/deletelist}" method="post">
+        <input type="hidden" th:value="${todolist.uuid}" name="uuid"/>
+        <input type="submit" value="Delete list"/>
+    </form>
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="todo : ${todolist.items}">
+            <td th:text="${todo.name}"></td>
+            <td th:text="${todo.status} ? 'done' : 'to-do'"></td>
+            <td>
+                <form th:object="${toggleFormModel}" th:action="@{/toggleitem}" method="post">
+                    <input type="hidden" th:value="${todo.uuid}" name="uuid"/>
+                    <input type="hidden" th:value="${todo.status} ? 'false' : 'true'" name="next"/>
+                    <input type="submit" value="Toggle done"/>
+                </form>
+                <form th:object="${deleteFormModel}" th:action="@{/deleteitem}" method="post">
+                    <input type="hidden" th:value="${todo.uuid}" name="uuid"/>
+                    <input type="submit" value="Delete"/>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
