@@ -23,33 +23,16 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn clean verify --file pom.xml
-    - name: Create azure devops issue if job failed
-      uses: stefanstranger/azuredevops-bug-action@1.1
-      if: failure()
+    - name: Create Bug in azure
+      uses: colindembovsky/az-create-work-item@v1.0.0
       with:
-        OrganizationName: "01169567"
-        PAT: "PAT"
-        ProjectName: "SystemTestowy"
-        AreaPath: "SystemTestowy"
-        IterationPath: "SystemTestowy"
-        GithubToken: "GithubToken"
-        WorkflowFileName: "maven.yml"
-      env:
-        PAT: ${{ secrets.PAT}}
-        GithubToken: ${{secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.PAT }}
+        orgName: '01169567'
+        project: 'SystemTestowy'
+        type: User Story
+        title: Work item from run ${{ github.run_number }}
+        description: Created from Actions!
     - name: Publish Test Report
       if: success() || failure()
       uses: scacap/action-surefire-report@v1
-    - name: Create azure devops issue if job failed
-      uses: stefanstranger/azuredevops-bug-action@1.1
-      with:
-        OrganizationName: "01169567"
-        PAT: "PAT"
-        ProjectName: "SystemTestowy"
-        AreaPath: "SystemTestowy"
-        IterationPath: "SystemTestowy"
-        GithubToken: "GithubToken"
-        WorkflowFileName: "maven.yml"
-      env:
-        PAT: ${{ secrets.PAT}}
-        GithubToken: ${{secrets.GITHUB_TOKEN }}
+  
