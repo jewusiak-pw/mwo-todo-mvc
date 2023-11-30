@@ -42,7 +42,6 @@ jobs:
       uses: scacap/action-surefire-report@v1
     - name: Create azure devops issue if job failed
       uses: stefanstranger/azuredevops-bug-action@1.1
-      if: failure()
       with:
         OrganizationName: "01169567"
         PAT: "PAT"
