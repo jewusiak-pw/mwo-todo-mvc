@@ -23,6 +23,20 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn clean verify --file pom.xml
+    - name: Create azure devops issue if job failed
+      uses: stefanstranger/azuredevops-bug-action@1.1
+      if: failure()
+      with:
+        OrganizationName: "01169567"
+        PAT: "PAT"
+        ProjectName: "SystemTestowy"
+        AreaPath: "SystemTestowy"
+        IterationPath: "SystemTestowy"
+        GithubToken: "GithubToken"
+        WorkflowFileName: "maven.yml"
+      env:
+        PAT: ${{ secrets.PAT}}
+        GithubToken: ${{secrets.GITHUB_TOKEN }}
     - name: Publish Test Report
       if: success() || failure()
       uses: scacap/action-surefire-report@v1
@@ -36,7 +50,7 @@ jobs:
         AreaPath: "SystemTestowy"
         IterationPath: "SystemTestowy"
         GithubToken: "GithubToken"
-        WorkflowFileName: "error.yml"
+        WorkflowFileName: "maven.yml"
       env:
         PAT: ${{ secrets.PAT}}
         GithubToken: ${{secrets.GITHUB_TOKEN }}
