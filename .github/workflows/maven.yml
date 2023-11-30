@@ -32,6 +32,8 @@ jobs:
     - name: update env
       if: failure()
       run: echo "::set-env name=MY_ENV::env value \"Pull request check failed for https://github.com/jewusiak-pw/mwo-todo-mvc/actions/runs/$GITHUB_RUN_ID\""
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
     - name: Create Bug in azure
       uses: colindembovsky/az-create-work-item@v1.0.0
       if: failure()
