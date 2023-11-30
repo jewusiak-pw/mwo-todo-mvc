@@ -25,6 +25,11 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn clean verify --file pom.xml
+    - name: Publish Test Report
+      id: reports
+      if: success() || failure()
+      uses: scacap/action-surefire-report@v1
+      
     - name: Create Bug in azure
       uses: colindembovsky/az-create-work-item@v1.0.0
       if: failure()
@@ -33,23 +38,8 @@ jobs:
         orgName: '01169567'
         project: 'SystemTestowy'
         type: Bug
-        title: Work item from run ${{ github.run_number }}
-        description: Created from Actions!
-    - name: Create azure devops issue if job failed
-      uses: stefanstranger/azuredevops-bug-action@1.1
-      if: failure()
-      with:
-        OrganizationName: "01169567"
-        PAT: "PAT"
-        ProjectName: "SystemTestowy"
-        AreaPath: "SystemTestowy"
-        IterationPath: "SystemTestowy"
-        GithubToken: "GithubToken"
-        WorkflowFileName: "error.yml"
-      env:
-        PAT: ${{ secrets.PAT}}
-        GithubToken: ${{secrets.GITHUB_TOKEN }}
-    - name: Publish Test Report
-      if: success() || failure()
-      uses: scacap/action-surefire-report@v1
+        title: Pull request check failed for run no ${{ github.run_number }}
+        description: PR check failed. See report https://github.com/jewusiak-pw/mwo-todo-mvc/actions/runs/$GITHUB_RUN_ID
+
+    
   
