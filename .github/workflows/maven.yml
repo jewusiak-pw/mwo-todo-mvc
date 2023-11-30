@@ -29,7 +29,8 @@ jobs:
       id: reports
       if: success() || failure()
       uses: scacap/action-surefire-report@v1
-      
+    - name: update env
+      run: echo "::set-env name=MY_ENV::env value \"Pull request check failed for https://github.com/jewusiak-pw/mwo-todo-mvc/actions/runs/$GITHUB_RUN_ID\""
     - name: Create Bug in azure
       uses: colindembovsky/az-create-work-item@v1.0.0
       if: failure()
@@ -38,7 +39,7 @@ jobs:
         orgName: '01169567'
         project: 'SystemTestowy'
         type: Bug
-        title: "Pull request check failed for https://github.com/jewusiak-pw/mwo-todo-mvc/actions/runs/$GITHUB_RUN_ID"
+        title: ${{ env.MY_ENV }} 
         description: "PR check failed. See report https://github.com/jewusiak-pw/mwo-todo-mvc/actions/runs/${GITHUB_RUN_ID}"
 
     
