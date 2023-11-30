@@ -38,7 +38,7 @@ jobs:
         orgName: '01169567'
         project: 'SystemTestowy'
         type: Bug
-        title: Pull request check failed for https://github.com/jewusiak-pw/mwo-todo-mvc/actions/runs/${GITHUB_RUN_ID}
+        title: "Pull request check failed for https://github.com/jewusiak-pw/mwo-todo-mvc/actions/runs/$GITHUB_RUN_ID"
         description: "PR check failed. See report https://github.com/jewusiak-pw/mwo-todo-mvc/actions/runs/${GITHUB_RUN_ID}"
 
     
