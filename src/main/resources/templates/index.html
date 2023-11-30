@@ -9,8 +9,8 @@
 
 <br>
 <form th:object="${createListModel}" th:action="@{/createlist}" method="post">
-    <input type="text" th:field="*{name}"/>
-    <input type="submit" value="Create list"/>
+    <input type="text" th:field="*{name}" id="newListInput"/>
+    <input type="submit" value="Create list" id="newListSubmit" />
 </form>
 <br>
 <br>
@@ -18,11 +18,11 @@
 
 <div th:each="todolist : ${todolists}">
 
-    <div><h3 th:text="${todolist.name}"></h3></div>
+    <div name="listDiv"><h3 th:text="${todolist.name}"></h3></div>
     <form th:object="${createItemModel}" th:action="@{/createitem}" method="post">
         <input type="hidden" th:value="${todolist.uuid}" name="uuid"/>
-        <input type="text" th:field="*{name}">
-        <input type="submit" value="Create item"/>
+        <input type="text" th:field="*{name}" id="newItemInput">
+        <input type="submit" value="Create item" id="newItemSubmit"/>
     </form>
     <form th:object="${deleteFormModel}" th:action="@{/deletelist}" method="post">
         <input type="hidden" th:value="${todolist.uuid}" name="uuid"/>
