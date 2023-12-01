@@ -1,5 +1,6 @@
 name: Java tests
 
+# Uruchomienie przy utworzonym pull requeście do gałęzi 'master' lub ręcznie
 on:
   pull_request:
     branches: [ "master" ]
@@ -16,24 +17,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # Pobranie repo z git
     - uses: actions/checkout@v3
+    # Inicjalizacja JDK
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+    # Budowanie aplikacji przy pomocy maven i testy (w tym Selenium)
     - name: Build with Maven
       run: mvn clean verify --file pom.xml
+    # Publikacja raportu z testu w zakładce w konkretnym uruchomieniu workflow
     - name: Publish Test Report
       id: reports
       if: success() || failure()
       uses: scacap/action-surefire-report@v1
+    # Generowanie wiadomości do Azure przy błędzie testów/budowy
     - name: update env
       if: failure()
       run: echo "::set-env name=MY_ENV::Pull request check failed for https://github.com/jewusiak-pw/mwo-todo-mvc/actions/runs/$GITHUB_RUN_ID"
       env:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    # Stworzenie buga w azure jeżeli nie powiodły się testy/build
     - name: Create Bug in azure
       uses: colindembovsky/az-create-work-item@v1.0.0
       if: failure()
