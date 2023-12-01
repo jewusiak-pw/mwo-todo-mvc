@@ -10,7 +10,7 @@
 <br>
 <form th:object="${createListModel}" th:action="@{/createlist}" method="post">
     <input type="text" th:field="*{name}" id="newListInput"/>
-    <input type="submit" value="Create list" id="newListSubmit" />
+    <input type="submit" value="Create list" id="newListSubmit"/>
 </form>
 <br>
 <br>
@@ -41,7 +41,7 @@
                 <form th:object="${toggleFormModel}" th:action="@{/toggleitem}" method="post">
                     <input type="hidden" th:value="${todo.uuid}" name="uuid"/>
                     <input type="hidden" th:value="${todo.status} ? 'false' : 'true'" name="next"/>
-                    <input type="submit" value="Toggle done"/>
+                    <div><input type="submit" value="Toggle done"/></div>
                 </form>
                 <form th:object="${deleteFormModel}" th:action="@{/deleteitem}" method="post">
                     <input type="hidden" th:value="${todo.uuid}" name="uuid"/>
