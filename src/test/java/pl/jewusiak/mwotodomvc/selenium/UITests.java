@@ -134,9 +134,9 @@ public class UITests {
         assertThat(lists.stream().map(WebElement::getText).toList()).usingRecursiveComparison().isEqualTo(List.of("test list", "test list3"));
     }
     
-    @Test
-    @Order(8)
-    void deliberatelyFailSometimes() {
-        wd.findElement(By.id("przyciskNieistniejący")).click();
-    }
+//    @Test
+//    @Order(8)
+//    void deliberatelyFail() {
+//        wd.findElement(By.id("przyciskNieistniejący")).click();
+//    }
 }
