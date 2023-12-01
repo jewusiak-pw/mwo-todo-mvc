@@ -52,8 +52,11 @@ public class UITests {
     @Test
     @Order(1)
     void createList() throws InterruptedException {
+        // given/when
         wd.findElement(By.id("newListInput")).sendKeys("test list");
         wd.findElement(By.id("newListSubmit")).click();
+
+        // then
         var lists = wd.findElements(By.xpath("/html/body/div/div/h3"));
         assertThat(lists.size()).isEqualTo(1);
         assertThat(lists.get(0).getText()).isEqualTo("test list");
@@ -62,13 +65,16 @@ public class UITests {
     @Test
     @Order(2)
     void createItem() {
+        // given
         var itemNames = List.of("test item", "test item2", "test item3");
+        
+        // when
         itemNames.forEach(item -> {
             wd.findElement(By.id("newItemInput")).sendKeys(item);
             wd.findElement(By.id("newItemSubmit")).click();
         });
 
-        
+        // then        
         var items = wd.findElements(By.xpath("/html/body/div/table/tbody/tr[position()>1]/td[1]"));
         assertThat(items.size()).isEqualTo(itemNames.size());
         assertThat(items.stream().map(WebElement::getText).toList()).usingRecursiveComparison().isEqualTo(itemNames);
@@ -77,9 +83,11 @@ public class UITests {
     @Test
     @Order(3)
     void updateItemStatus() {
+        // when
         wd.findElement(By.xpath("/html/body/div/table/tbody/tr[2]/td[3]/form[1]/input[3]")).click(); // 1st item
         wd.findElement(By.xpath("/html/body/div/table/tbody/tr[4]/td[3]/form[1]/input[3]")).click(); // 3rd item
         
+        // then
         var items = wd.findElements(By.xpath("/html/body/div/table/tbody/tr[position()>1]/td[2]"));
         assertThat(items.size()).isEqualTo(3);
         assertThat(items.stream().map(WebElement::getText).toList()).usingRecursiveComparison().isEqualTo(List.of("done", "to-do", "done"));
@@ -88,9 +96,11 @@ public class UITests {
     @Test
     @Order(4)
     void deleteItem() {
+        // when
         wd.findElement(By.xpath("/html/body/div/table/tbody/tr[4]/td[3]/form[2]/input[2]")).click();// 3rd item
         wd.findElement(By.xpath("/html/body/div/table/tbody/tr[2]/td[3]/form[2]/input[2]")).click();// 1st item
         
+        // then
         //one item left
         var items = wd.findElements(By.xpath("/html/body/div/table/tbody/tr[position()>1]/td[1]"));
         assertThat(items.size()).isEqualTo(1);
@@ -100,8 +110,10 @@ public class UITests {
     @Test
     @Order(5)
     void deleteListWithItems() {
+        // when
         wd.findElement(By.xpath("/html/body/div/form[2]/input[2]")).click();
         
+        // then
         var lists = wd.findElements(By.xpath("/html/body/div/div/h3"));
         assertThat(lists.size()).isEqualTo(0);
     }
@@ -109,10 +121,14 @@ public class UITests {
     @Test
     @Order(6)
     void deleteListWithoutItems() {
+        // given
         wd.findElement(By.id("newListInput")).sendKeys("test list");
         wd.findElement(By.id("newListSubmit")).click();
+        
+        // when
         wd.findElement(By.xpath("/html/body/div/form[2]/input[2]")).click();
         
+        // then
         var lists = wd.findElements(By.xpath("/html/body/div/div/h3"));
         assertThat(lists.size()).isEqualTo(0);
     }
@@ -120,6 +136,7 @@ public class UITests {
     @Test
     @Order(7)
     void deleteOneOfTheLists(){
+        // given
         wd.findElement(By.id("newListInput")).sendKeys("test list");
         wd.findElement(By.id("newListSubmit")).click();
         wd.findElement(By.id("newListInput")).sendKeys("test list2");
@@ -127,8 +144,10 @@ public class UITests {
         wd.findElement(By.id("newListInput")).sendKeys("test list3");
         wd.findElement(By.id("newListSubmit")).click();
         
+        // when
         wd.findElement(By.xpath("/html/body/div[2]/form[2]/input[2]")).click(); //2nd list
         
+        // then
         var lists = wd.findElements(By.xpath("/html/body/div/div/h3"));
         assertThat(lists.size()).isEqualTo(2);
         assertThat(lists.stream().map(WebElement::getText).toList()).usingRecursiveComparison().isEqualTo(List.of("test list", "test list3"));
